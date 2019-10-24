@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <!-- Audio Player CSS & Scripts -->
+    <title>
+        ARRE MONTERREY
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cp.usastreams.com/playerHTML5/player/assets/css/iframe-radio.css" media="screen" />
+    <script type="text/javascript" src="https://cp.usastreams.com/playerHTML5/player/assets/js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="https://cp.usastreams.com/playerHTML5/player/assets/js/jquery.jplayer.min.js"></script>
+
+
+
+    <style>
+        #container {
+            width: 100%;
+        }
+        
+        .player .playback .play {
+            background: url("img-radio/spriteWhite2.png") no-repeat -1px -210px;
+        }
+        
+        .player .playback .stop:before {
+            background: url("img-radio/spriteWhite2.png") no-repeat -330px -210px;
+        }
+        
+        .player .playback .stop {
+            background: url("img-radio/spriteWhite2.png") no-repeat -165px -210px;
+        }
+        
+        .foto iframe {
+            width: 100%;
+            margin-top: 50px;
+            margin-right: 80px;
+            display: block;
+        }
+        
+        #jp_container_rcast {
+            width: 100%;
+            top: 53px !important;
+        }
+        
+        .player {
+            background: none;
+            height: 78px;
+            margin: 0 auto;
+            max-width: 500px;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        #jp_container_rcast {
+            /*width: 220px;*/
+            width: 100%;
+            top: 20px;
+        }
+        
+        .titulo {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: normal;
+            font-size: 20px;
+            text-shadow: 0;
+            background: #764e24;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0px 0px 5px rgba(22, 22, 22, 0.5) inset;
+        }
+        
+        .led {
+            display: none;
+        }
+        
+        .volume-control {
+            width: 100px;
+        }
+        
+        .artista {
+            position: absolute;
+            top: 35px;
+            /*left: 230px;*/
+            right: 75px;
+            height: 120px;
+            width: 180px;
+        }
+        
+        .foto {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            /*left: 5px;*/
+            /*right: 220px;*/
+        }
+        
+        img.cover {
+            border: 0;
+            width: 20%;
+            margin: 0%;
+        }
+        
+        .artista {
+            display: none;
+        }
+        
+        .estaciones img {
+            width: 50px;
+            height: auto;
+        }
+        
+        .estaciones ul {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 6%;
+            list-style: none;
+            margin-right: 5%;
+            justify-content: center;
+        }
+        
+        .estaciones ul li {
+            padding: .5em;
+            border: white 3px solid;
+            margin-left: 1em;
+            border-radius: 10px;
+            box-shadow: 5px 10px 18px #414040;
+            width: 50px;
+        }
+        
+        .estaciones a {
+            color: white;
+        }
+        
+        .estaciones span {
+            text-align: center;
+        }
+        
+        b,
+        strong {
+            font-weight: 900;
+        }
+        
+        .reproductor {
+            margin-left: 130px;
+        }
+        
+        @media (max-width: 576px) {
+            .foto {
+                display: none !important;
+            }
+            .estaciones img {
+                width: 50px !important;
+                height: auto;
+            }
+            .estaciones ul {
+                display: flex;
+                flex-wrap: none;
+                margin-top: 30%;
+                margin-right: 4em;
+            }
+            .estaciones ul li {
+                margin-bottom: 10%;
+            }
+            .reproductor {
+                margin-left: 22px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .foto {
+                display: block;
+            }
+            .estaciones img {
+                width: 50px !important;
+                height: auto;
+            }
+            .estaciones ul {
+                display: flex;
+                flex-wrap: none;
+                margin-top: 10%;
+                margin-right: 4em;
+            }
+            .estaciones ul li {
+                margin-bottom: 10%;
+            }
+            .reproductor {
+                margin-left: 130px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .foto {
+                display: block;
+            }
+            .estaciones img {
+                width: 50px !important;
+                height: auto;
+            }
+            .estaciones ul {
+                display: flex;
+                flex-wrap: none;
+                margin-top: 10%;
+                margin-right: 4em;
+            }
+            .estaciones ul li {
+                margin-bottom: 10%;
+            }
+            .reproductor {
+                margin-left: |30px;
+            }
+        }
+        
+        @media (max-width: 1200px) {}
+    </style>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+            var streamrcast = {
+                    mp3: 'http://45.169.236.3:8000/grupera-mp3',
+                },
+                ready = false;
+            $("#jquery_jplayer_USAstreams").jPlayer({
+                ready: function(event) {
+                    ready = true;
+                    $(this).jPlayer("setMedia", streamrcast).jPlayer("play");
+                },
+                play: function() {
+                    $(this).jPlayer("pauseOthers", 0);
+                    $('#volumercast').css('visibility', 'visible');
+                },
+                pause: function() {
+                    $(this).jPlayer("clearMedia");
+                    $('#volumercast').css('visibility', 'hidden');
+                },
+                error: function(event) {
+                    if (ready && event.jPlayer.error.type === $.jPlayer.error.URL_NOT_SET) {
+                        $(this).jPlayer("setMedia", streamrcast).jPlayer("play");
+                    }
+                },
+                swfPath: "jPlayer/dist/jplayer",
+                supplied: "mp3",
+                cssSelectorAncestor: "#jp_container_rcast",
+                preload: "none",
+                globalVolume: "true",
+                volume: "0.50"
+            });
+        }); //]]>        $(document).ready(function () {            $("#jquery_jplayer_USAstreams").on(              $.jPlayer.event.ready + ' ' + $.jPlayer.event.play,              function (event) {                  /* === VOLUME DRAGGING ==== */                  $('.jp-volume-bar').mousedown(function () {                      var parentOffset = $(this).offset(),                        width = $(this).width();                      $(window).mousemove(function (e) {                          var x = e.pageX - parentOffset.left,                            volume = x / width                          if (volume > 1) {                              $("#jquery_jplayer_USAstreams").jPlayer("volume", 1);                          } else if (volume <= 0) {                              $("#jquery_jplayer_USAstreams").jPlayer("mute");                          } else {                              $("#jquery_jplayer_USAstreams").jPlayer("volume", volume);                              $("#jquery_jplayer_USAstreams").jPlayer("unmute");                          }                      });                      return false;                  })                    .mouseup(function () {                        $(window).unbind("mousemove");                    });                  /* === ENABLE DRAGGING ==== */                  var timeDrag = false; /* Drag status */                  $('.jp-play-bar').mousedown(function (e) {                      timeDrag = true;                      updatebar(e.pageX);                  });                  $(document).mouseup(function (e) {                      if (timeDrag) {                          timeDrag = false;                          updatebar(e.pageX);                      }                  });                  $(document).mousemove(function (e) {                      if (timeDrag) {                          updatebar(e.pageX);                      }                  });                  //update Progress Bar control                  var updatebar = function (x) {                      var progress = $('.jp-progress');                      //var maxduration = myPlaylist.duration; //audio duration                      var position = x - progress.offset().left; //Click pos                      var percentage = 100 * position / progress.width();                      //Check within range                      if (percentage > 100) {                          percentage = 100;                      }                      if (percentage < 0) {                          percentage = 0;                      }                      $("#jquery_jplayer_USAstreams").jPlayer("playHead", percentage);                      //Update progress bar                      $('.jp-play-bar').css('width', percentage + '%');                  };              }); // end jplayer event ready        }); // end document ready
+    </script>
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("img-radio/fondo-radio-four.jpg");
+            background-size: cover;
+            background-repeat: repeat;
+            ;
+            /*background: linear-gradient(to bottom, rgba(116, 76, 36, 1) 0%, rgba(214, 151, 45, 1) 50%, rgba(116, 76, 36, 1) 100%);*/
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <!-- CONTENEDOR DE RADIO -->
+        <div class="main-container" style="margin: 0 !important;">
+
+            <div class="titulo">
+                <span id="LabelTitulo"><strong>ARRE</strong> MTY</span></div>
+            <span id="LabelMeter"><img class='led' src='http://acustik.mx/wp-content/uploads/2019/10/ecualizador-arre.gif' alt='' ><div class='artista'><iframe name='cont' width='100%' height='100px' marginwidth=0 marginheight=0 hspace=0 vspace=0 
+            frameborder=0 frameborder='no' scrolling=no  
+            src='https://cp.usastreams.com/RealTimeAjaxArtista.aspx?servidor=http://cdn.aka1.usastreams.com:8000/status.xslCHUMILLASmount=/usastreams&color=titulosBlanco'></iframe>
+            </div></span>
+            <div class="foto">
+                <span id="LabelFoto"><iframe name='cont' width='100%' height='auto' marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 frameborder='no' scrolling=no  src='http://acustik.mx/wp-content/uploads/2019/10/logo-arre.png'></iframe></span>
+            </div>
+
+
+        </div>
+
+        <div class="playerFull">
+
+
+            <div class="reproductor">
+                <!-- BOTON PLAY -->
+                <div class="jp-jplayer" id="jquery_jplayer_USAstreams" style="width: 0px; height: 0px;">
+                    <span id="LabelPlayer"><audio id = "jp_audio_usastreams"  controls preload = "none" autoplay >  <source src = "http://cdn.aka1.usastreams.com:8000/usastreams" type = "audio/mpeg "> <h1>USAstreams.com posicionamiento web, SEO, streaming radio, tv, videos bajo demanda</h1><p>html5 o javascript no soportado</p></audio></span>
+                </div>
+
+                <!-- MEDIA PLAYER -->
+                <div aria-label="media player" role="application" class="player jp-audio-stream" id="jp_container_rcast" style="margin: 0 !important;">
+
+                    <div id="jplayer-object"></div>
+
+                    <div class="playback">
+                        <div class="jp-play play" title="Play">
+                            <svg width="68" height="68" version="1.0" id="button" xmlns="https://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 68 68" xml:space="preserve">
+                                <circle cx="34" cy="34" r="32" />
+                                <path fill="#FFFFFF" d="M47.9,32.9L31.4,20c-0.9-0.9-2.5-0.9-3.4,0l0,0c-0.4,0.4-0.9,0.9-0.9,1.3v25.3c0,0.4,0.4,0.9,0.9,1.3l0,0 c0.9,0.9,2.5,0.9,3.4,0L47.9,35C48.7,34.6,48.7,33.8,47.9,32.9L47.9,32.9z" />
+                            </svg>
+                        </div>
+                        <div class="jp-pause stop" style="display: none;" title="Stop">
+                            <svg width="68" height="68" version="1.1" id="button" xmlns="https://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 68 68" xml:space="preserve">
+                                <circle cx="34" cy="34" r="32" />
+                                <path fill="#FFFFFF" d="M42.7,44.7H25.3c-1.1,0-1.9-0.9-1.9-1.9V25.3c0-1.1,0.9-1.9,1.9-1.9h17.5c1.1,0,1.9,0.9,1.9,1.9v17.5 C44.7,43.8,43.8,44.7,42.7,44.7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- CONTROL DE VOLUMEN -->
+                    <div class="volume-control">
+                        <div class="jp-mute volume-icon" title="Mute">
+                            <svg id="volume" height="28" width="28" viewBox="0 0 48 48" xmlns="https://www.w3.org/2000/svg" fill="#525252">
+                                <path d="M6 18v12h8l10 10V8L14 18H6zm27 6c0-3.53-2.04-6.58-5-8.05v16.11c2.96-1.48 5-4.53 5-8.06zM28 6.46v4.13c5.78 1.72 10 7.07 10 13.41s-4.22 11.69-10 13.41v4.13c8.01-1.82 14-8.97 14-17.54S36.01 8.28 28 6.46z" />
+                                <path d="M0 0h48v48H0z" fill="none" />
+                            </svg>
+                        </div>
+                        <div class="jp-unmute volume-icon" style="display: none;" title="Unmute">
+                            <svg id="muted" height="28" width="28" viewBox="0 0 48 48" xmlns="https://www.w3.org/2000/svg" fill="#525252">
+                                <path d="M33 24c0-3.53-2.04-6.58-5-8.05v4.42l4.91 4.91c.06-.42.09-.85.09-1.28zm5 0c0 1.88-.41 3.65-1.08 5.28l3.03 3.03C41.25 29.82 42 27 42 24c0-8.56-5.99-15.72-14-17.54v4.13c5.78 1.72 10 7.07 10 13.41zM8.55 6L6 8.55 15.45 18H6v12h8l10 10V26.55l8.51 8.51c-1.34 1.03-2.85 1.86-4.51 2.36v4.13c2.75-.63 5.26-1.89 7.37-3.62L39.45 42 42 39.45l-18-18L8.55 6zM24 8l-4.18 4.18L24 16.36V8z" />
+                                <path d="M0 0h48v48H0z" fill="none" />
+                            </svg>
+                        </div>
+                        <div class="volume-slider">
+                            <div class="jp-volume-bar progress vol-progress">
+                                <div class="jp-volume-bar-value progress-bar active progress-bar-striped progress-bar-success vol-bar">
+                                    <div class="circle-control" title="Volume"></div>
+                                </div>
+                            </div>
+                            <div class="player-status"><span class="jp-current-time">00:00</span></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ESTACIONES -->
+        <div class="container-fluid">
+            <div class="estaciones">
+                <ul>
+                    <li>
+                        <a href="radio.html"><img src="img-radio/estacion.png" alt="puebla"><span><br />ARRE<strong> Puebla</strong></span></a>
+                    </li>
+                    <li class="space">
+                        <a href="radio-mexico.html"><img src="img-radio/estacion.png" alt="mexico"><span><br />ARRE <strong> CDMX</strong></span></a>
+                    </li>
+                    <li class="space">
+                        <a href="radio-guadalajara.html"><img src="img-radio/estacion.png" alt="guadalajara"><span><br />ARRE<strong> GDL</strong></span></a>
+                    </li>
+                    <li>
+                        <a href="radio-monterrey.html"><img src="img-radio/estacion.png" alt="monterrey"><span><br />ARRE<strong> MTY</strong></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
